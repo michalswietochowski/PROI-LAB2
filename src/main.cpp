@@ -10,13 +10,14 @@
  */
 
 #include <iostream>
+#include "CircularBuffer.h"
 
 using namespace std;
 
 int main(int argc, char *argv[])
 {
-//    const unsigned int BUFFER_SIZE = 10;
-//    CircularBuffer buffer(BUFFER_SIZE);
+    const unsigned int BUFFER_SIZE = 10;
+    CircularBuffer<int> buffer(BUFFER_SIZE);
 
     if (argc > 1) {
         if (argv[1] == string("test")) {
@@ -31,7 +32,6 @@ int main(int argc, char *argv[])
 //        CLI cli(buffer);
 //        cli.showMenu();
     }
-//    CircularBuffer bufferCopy = buffer;
-//    cout << bufferCopy << endl;
+    cout << buffer.toString() << endl;
     return 0;
 }
