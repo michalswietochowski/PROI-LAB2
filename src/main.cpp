@@ -14,14 +14,14 @@
 
 using namespace std;
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     const unsigned int BUFFER_SIZE = 10;
-    CircularBuffer<int> buffer(BUFFER_SIZE);
+    CircularBuffer<int> intBuffer(BUFFER_SIZE);
+    CircularBuffer<string> stringBuffer(BUFFER_SIZE);
 
     if (argc > 1) {
         if (argv[1] == string("test")) {
-//            CircularBufferTest tester(buffer);
+//            CircularBufferTest tester(intBuffer);
 //            tester.runTests();
         } else {
             cout << "Usage:" << endl;
@@ -29,9 +29,11 @@ int main(int argc, char *argv[])
             cout << " test - runs test on buffer classes" << endl;
         }
     } else {
-//        CLI cli(buffer);
+//        CLI cli(intBuffer);
 //        cli.showMenu();
     }
-    cout << buffer.toString() << endl;
+    cout << intBuffer + 1 << endl;
+    cout << 1 + intBuffer << endl;
+    cout << stringBuffer << endl;
     return 0;
 }
