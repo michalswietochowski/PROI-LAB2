@@ -8,11 +8,9 @@
 
 /* Begin PBXFileReference section */
 		BFF6717E4959BE158BE80486 /* CircularBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircularBuffer.h; sourceTree = "<group>"; };
-		BFF671DA357E7FB63559480E /* CLI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CLI.cpp; sourceTree = "<group>"; };
 		BFF67444345DEA3735E36D51 /* ListBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ListBuffer.cpp; sourceTree = "<group>"; };
 		BFF677579AD560E71FC7B13A /* ListBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListBuffer.h; sourceTree = "<group>"; };
 		BFF67865C2F4675CEF0E0412 /* CircularBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CircularBuffer.cpp; sourceTree = "<group>"; };
-		BFF6798BA8F06A4AB13A5717 /* CLI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLI.h; sourceTree = "<group>"; };
 		BFF679E05D3C47D737F94F90 /* buf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = buf; sourceTree = "<group>"; };
 		BFF67A1C8A74DB9B84F27E21 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.info; path = Info.plist; sourceTree = "<group>"; };
 		BFF67AAD53539CC3A8A9DD03 /* BuffersTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BuffersTest.cpp; sourceTree = "<group>"; };
@@ -37,8 +35,6 @@
 				BFF6717E4959BE158BE80486 /* CircularBuffer.h */,
 				BFF67444345DEA3735E36D51 /* ListBuffer.cpp */,
 				BFF677579AD560E71FC7B13A /* ListBuffer.h */,
-				BFF671DA357E7FB63559480E /* CLI.cpp */,
-				BFF6798BA8F06A4AB13A5717 /* CLI.h */,
 				BFF67AAD53539CC3A8A9DD03 /* BuffersTest.cpp */,
 				BFF67D7FEF1B9E2B486B630D /* BuffersTest.h */,
 			);
