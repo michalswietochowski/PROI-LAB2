@@ -4,6 +4,7 @@
 //
 
 #include <sstream>
+#include <cmath>
 #include "AbstractBuffer.h"
 
 #ifndef __CircularBuffer_H_
@@ -11,6 +12,18 @@
 
 template <typename T>
 class CircularBuffer : public AbstractBuffer<T> {
+    /**
+     * initial size of buffer
+     */
+    int initialSize;
+    /**
+     * size of buffer
+     */
+    int size;
+    /**
+     * oldest element index
+     */
+    int start;
     /**
      * vector of elements
      */
@@ -22,6 +35,7 @@ public:
      * @param int size size of buffer
      */
     CircularBuffer<T>(int size) {
+        this->initialSize = size;
         this->size = size;
         this->start = 0;
         this->count = 0;
@@ -32,7 +46,37 @@ public:
      * Copy constructor
      */
     CircularBuffer<T>(const CircularBuffer &buffer) {
+        this->initialSize = buffer.getInitialSize();
+        this->size = buffer.getSize();
+        this->start = buffer.getStart();
+        this->count = buffer.getCount();
+        this->elements = new T[this->size];
+        T *sourceElements = buffer.getElements();
+        for (int i = 0; i <= this->count; i++) {
+            this->elements[i] = sourceElements[i];
+        }
+    }
 
+    /**
+     * Destructor
+     */
+    ~CircularBuffer() {
+        delete [] this->elements;
+    }
+
+    /*
+     * Getters
+     */
+    int getInitialSize() const {
+        return this->initialSize;
+    }
+
+    int getSize() const {
+        return this->size;
+    }
+
+    int getStart() const {
+        return this->start;
     }
 
     T *getElements() const {
@@ -44,15 +88,15 @@ public:
      * @param T element
      * @return void
      */
-    void write(T &element) {
-        int end = (this->start + this->count) % this->size;
-        this->elements[end] = element;
-
-        if (this->count == this->size) {
-            this->start = (this->start + 1) % this->size;
-        } else {
-            ++this->count;
+    void write(T element) {
+        if (this->isFull()) {
+            if (!this->increaseBuffer()) {
+                string exceptionMessage = "Cannot increase buffer size, element dropped";
+                throw exceptionMessage;
+            }
         }
+        this->elements[this->count] = element;
+        ++this->count;
     }
 
     /**
@@ -61,11 +105,13 @@ public:
      */
     T *read() {
         if (isEmpty()) {
-            return NULL;
+            string exceptionMessage = "Buffer is empty";
+            throw exceptionMessage;
         }
         T *element = &this->elements[this->start];
-        this->start = (this->start + 1) % this->size;
+        ++this->start;
         --this->count;
+        this->optimizeBuffer();
         return element;
     }
 
@@ -137,9 +183,13 @@ public:
 
         for (int i = 0; i < this->size; i++) {
             char str[20];
-            ostringstream ss;
-            ss << this->elements[i];
-            sprintf(str, "%5s", ss.str().c_str());
+            if (i > this->start + this->count - 1) {
+                sprintf(str, "%5s", "");
+            } else {
+                ostringstream ss;
+                ss << this->elements[i];
+                sprintf(str, "%5s", ss.str().c_str());
+            }
             bufferAsString.append(str);
             bufferAsString.append(" | ");
         }
@@ -161,7 +211,7 @@ public:
         bufferAsString.append(horizontalLine);
 
         //size
-        bufferAsString.append("\nSize = ");
+        bufferAsString.append("Size = ");
         char str[20];
         sprintf(str, "%d", this->size);
         bufferAsString.append(str);
@@ -186,6 +236,7 @@ public:
         } else {
             bufferAsString.append("NO");
         }
+        bufferAsString.append("\n");
 
         return bufferAsString;
     }
@@ -198,6 +249,54 @@ public:
     CircularBuffer &operator += (T element) {
         this->write(element);
         return *this;
+    }
+
+    int getSizeChangeThreshold(int size) {
+        return (int) floor((double) size / 2);
+    }
+
+    /**
+     * increases buffer size to fit new elements
+     */
+    bool increaseBuffer() {
+        int newSize = this->size + this->getSizeChangeThreshold(this->size);
+        T *newElements = new T[newSize];
+        for (int i = 0; i < this->size; i++) {
+            newElements[i] = this->elements[i];
+        }
+        this->elements = newElements;
+        this->size = newSize;
+//        cout << "  + Increased buffer size to: " << newSize << endl;
+        return true;
+    }
+
+    /**
+     * optimizes buffer size when there are too many empty cells
+     */
+    void optimizeBuffer() {
+        //reset buffer if it is empty
+        if (isEmpty()) {
+            this->clear();
+            return;
+        }
+        int newSize = this->getSizeChangeThreshold(this->size);
+        //do not resize if it is smaller than calculated part of initial size
+        if (newSize < this->getSizeChangeThreshold(this->initialSize)) {
+            return;
+        }
+        //resize if there are less elements than calculated size
+        if (this->count <= newSize) {
+            T *newElements = new T[newSize];
+            int end = this->start + this->count;
+            int j = 0;
+            for (int i = this->start; i < end; i++) {
+                newElements[j++] = this->elements[i];
+            }
+            this->elements = newElements;
+            this->size = newSize;
+            this->start = 0;
+//            cout << "  - Decreased buffer size to: " << newSize << endl;
+        }
     }
 };
 

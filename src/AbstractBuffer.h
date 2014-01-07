@@ -18,14 +18,6 @@ template <typename T>
 class AbstractBuffer {
 protected:
     /**
-     * size of buffer
-     */
-    int size;
-    /**
-     * oldest element index
-     */
-    int start;
-    /**
      * elements count
      */
     int count;
@@ -50,18 +42,7 @@ public:
      * Copy constructor
      */
     AbstractBuffer(const AbstractBuffer &buffer) {
-
-    }
-
-    /*
-     * Getters
-     */
-    int getSize() const {
-        return size;
-    }
-
-    int getStart() const {
-        return start;
+        this->count = buffer.getCount();
     }
 
     int getCount() const {
@@ -75,7 +56,7 @@ public:
      * @param T element
      * @return void
      */
-    virtual void write(T &element) = 0;
+    virtual void write(T element) = 0;
 
     /**
      * Read from buffer
@@ -146,30 +127,9 @@ public:
      * @param T element
      * @return AbstractBuffer
      */
-    friend T &operator <<(AbstractBuffer &buffer, T element) {
+    friend AbstractBuffer &operator <<(AbstractBuffer &buffer, T element) {
         buffer += element;
         return buffer;
-    }
-
-    /**
-     * Write Element to buffer (other way - by + operator)
-     * @param AbstractBuffer buffer
-     * @param T element
-     * @return AbstractBuffer
-     */
-    friend AbstractBuffer &operator +(AbstractBuffer &buffer, T element) {
-        buffer += element;
-        return buffer;
-    }
-
-    /**
-     * Write Element to buffer (other way - by + operator commutative)
-     * @param Element element
-     * @param AbstractBuffer buffer
-     * @return AbstractBuffer
-     */
-    friend AbstractBuffer &operator +(T element, AbstractBuffer &buffer) {
-        return buffer + element;
     }
 };
 
